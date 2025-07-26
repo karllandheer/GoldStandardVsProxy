@@ -24,7 +24,7 @@ To run the simulations, you will need Python installed. We recommend using `cond
 
 Clone the repository:
 ```bash
-git clone [https://github.com/karllandheer/GoldStandardVsProxy]
+git clone https://github.com/karllandheer/GoldStandardVsProxy
 cd GoldStandardVsProxy
 ```
 
