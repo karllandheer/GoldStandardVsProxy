@@ -27,4 +27,7 @@ Clone the repository:
 git clone [https://github.com/karllandheer/GoldStandardVsProxy)]
 cd GoldStandardVsProxy
 
+### Running
+
 You can then run each of the individual scripts, which replicate the analyses in Figures 2-5. Figure 1 was generated via synMARSS, which is licensed by Columbia Tech Ventures. Read about synMARSS here, and how to access it: https://pubmed.ncbi.nlm.nih.gov/39948757/
+
