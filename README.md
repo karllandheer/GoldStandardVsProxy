@@ -18,7 +18,7 @@ The use of proxy measurements in biomedical science is ubiquitous, often due to 
 
 To run the simulations, you will need Python installed. We recommend using `conda` or `pip` for managing dependencies.
 
-* Python 3.8 or higher *
+Python 3.8 or higher
 
 ### Installation
 
