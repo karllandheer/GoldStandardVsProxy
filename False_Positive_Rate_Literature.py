@@ -21,13 +21,6 @@ rand_d_list = np.linspace(0,3,71) #a range of bias introduced by the use of prox
 
 alpha = 0.05
 
-# pre_test_vals = [7.525371838,5.680068021,6.820934551,5.298153342,4.654821886,3.201262878,5.582929746,8.403816547,5.660714085,8.396797701,
-# 9.357454303,6.597390981,7.039939054,6.826232273,5.999884486,5.795365613,8.551641439,6.335005035,7.032780391,9.430504797,9.689421735,
-# 6.850126077,5.658890493,5.310078348,7.245422651,]
-
-# post_test_vals = [6.518826216,8.17308868,6.479650693,7.978594028,6.53853625,6.159600158,4.169059855,10.83229785,6.097715304,
-# 5.243369388,9.28770098,5.202086933,8.283323111,10.56449597,5.865212537,10.06930747,10.48830988,5.720077556,7.018505785,
-# 10.91643984,8.579596291,5.809928574,5.120225956,8.148282808,10.37972639]
 
 mean_pre_test_vals = 6.75780033084
 mean_post_test_vals =  7.58575834012
@@ -38,11 +31,11 @@ GABA_conc = mean_pre_test_vals
 
 delta_manuscript = (mean_post_test_vals-mean_pre_test_vals)/np.sqrt(1-corr**2)
 
-#values from manuscript
+#values from manuscript. Raw values from which these are derived can be obtained by request from Jia et al.
 std_scale_c = 1.550032652662542
 std_scale_d = 2.0458394840559833
 
-#assumed, because gold-standard measurements are obviously unknown
+#assumed, because gold-standard measurements are obviously unknown, also from literature. 
 std_scale_a = std_scale_c
 std_scale_b = std_scale_d
 
