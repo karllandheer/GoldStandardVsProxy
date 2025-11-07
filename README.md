@@ -17,7 +17,7 @@ The use of proxy measurements in biomedical science is ubiquitous, often due to 
 
 To run the simulations, you will need Python installed. Recommend using `conda` or `pip` for managing dependencies.
 
-Python 3.8 or higher
+Python 3.8 or higher, scipy version 1.15.3 and numpy version 2.1.3
 
 ### Installation
 
@@ -30,5 +30,5 @@ cd GoldStandardVsProxy
 ### Running
 
 You can then run each of the individual scripts, which replicate the analyses in Figures 2-5, and print out the numbers in the manuscript. Figure 1 was generated via synMARSS, which is licensed by Columbia Tech Ventures. Read about synMARSS here, and how to access it: https://pubmed.ncbi.nlm.nih.gov/39948757/. For example,. to re-create Figure 2, simply 
-run ```python False_Positive_Rate_Multi_Alpha.py```. Note that False_Positive_Rate_Multi_Alph.py and False_Negative_Rate_Multi_Alpha.py can take a very long time to run (several days). If you want to just test, set N = 5000 at the top of the script (or something like this). The numbers will change slightly, but it will instead run much quicker to test.
+run ```python FPR_and_FNR.py```. Note that these scripts can take a while to run (many hours), so if you just want to test, set N_SIMULATIONS to a small number (e.g., 5000). The numbers will change slightly, but it will instead run much quicker to test.
 
