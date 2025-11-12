@@ -12,8 +12,7 @@ np.random.seed(42)
 # --- 1. Simulation Constants ---
 
 # Parameters for the simulation itself
-# N_SIMULATIONS = 500_000  # Number of simulated experiments for each point
-N_SIMULATIONS = 500 # Kept low for testing, as requested
+N_SIMULATIONS = 500_000  # 500k for final accuracy
 ALPHA = 0.05 # This is now just the *default* for the main plots
 RHO_STEPS = 50           # Number of correlation points to sweep (from 0.01 to 1.0)
 

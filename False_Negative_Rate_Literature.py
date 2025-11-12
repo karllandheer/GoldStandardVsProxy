@@ -10,7 +10,7 @@ import matplotlib.pyplot as plt
 np.random.seed(42)
 
 # --- 1. Simulation Constants ---
-N_SIMULATIONS = 500 # Increased to ensure accurate FNR curves
+N_SIMULATIONS = 500_000 #500k for final accuracy
 ALPHA = 0.05
 DELTA_MANUSCRIPT = -0.05 # Assumed true effect size from manuscript
 N_SAMPLES_CONTROL = 10
@@ -18,12 +18,10 @@ N_SAMPLES_CASE = 9
 SIGMA_P_LIT = 0.06  # From Bilcher et al. [12]
 
 # --- 2. Grid Parameters ---
-# --- MODIFICATION: Use the user-provided correct VR_MAX ---
 EMPIRICAL_CORR = 0.58
 # VR_MAX = (1 / EMPIRICAL_CORR)**2 # This was the incorrect calculation
 VR_MAX = 1.3130643285972257 # This is the corrected value
 VR_VALUES = [0.5, 1.0, VR_MAX]
-# --- End of Modification ---
 
 FIXED_R_SIGMA = 1.0 # R_sigma is fixed, as it doesn't affect FNR when delta=0
 
@@ -38,8 +36,8 @@ print(f"Running with VR_VALUES: [0.5, 1.0, {VR_MAX:.3f} (VR_max)]")
 # --- 3. Output Paths ---
 OUTPUT_PATH = r'C:\ColumbiaWork\PapersOnGo\MEGAvsNon\MEGAvsNon\Figures'
 # New filenames to reflect the change
-OUTPUT_DATA_PATH = "simulation_results_literature_FNR_VRmax_1.313_FIXED.csv"
-OUTPUT_FIGURE_PATH_FNR = "simulation_FNR_literature_VRmax_1.313_FIXED.png"
+OUTPUT_DATA_PATH = "simulation_results_literature_FNR_VRmax_1.313.csv"
+OUTPUT_FIGURE_PATH_FNR = "simulation_FNR_literature_VRmax_1.313.png"
 
 # Check if path exists, otherwise save to local directory
 if OUTPUT_PATH is not None and os.path.exists(OUTPUT_PATH):
@@ -47,8 +45,8 @@ if OUTPUT_PATH is not None and os.path.exists(OUTPUT_PATH):
     OUTPUT_FIGURE_PATH_FNR = os.path.join(OUTPUT_PATH, OUTPUT_FIGURE_PATH_FNR)
 else:
     print(f"Warning: OUTPUT_PATH '{OUTPUT_PATH}' not found. Saving to current directory.")
-    OUTPUT_DATA_PATH = "simulation_results_literature_FNR_VRmax_1.313_FIXED.csv"
-    OUTPUT_FIGURE_PATH_FNR = "simulation_FNR_literature_VRmax_1.313_FIXED.png"
+    OUTPUT_DATA_PATH = "simulation_results_literature_FNR_VRmax_1.313.csv"
+    OUTPUT_FIGURE_PATH_FNR = "simulation_FNR_literature_VRmax_1.313.png"
 
 
 def run_literature_sim(vr, corr, Delta):
@@ -160,12 +158,10 @@ if __name__ == "__main__":
 
             legend_labels.append(f'ρ = {corr:.2f}')
 
-        # --- MODIFICATION: Set custom title for the VR_MAX plot ---
         if vr == VR_MAX:
             ax.set_title(f'VR = {vr:.3f} ($VR_{{max}}$)')
         else:
             ax.set_title(f'VR = {vr}')
-        # --- End of Modification ---
             
         ax.legend(legend_labels, fancybox=True)
         ax.tick_params(which='both', top=True, right=True, labeltop=False, labelright=False)

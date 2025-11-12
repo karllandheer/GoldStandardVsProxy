@@ -17,7 +17,13 @@ The use of proxy measurements in biomedical science is ubiquitous, often due to 
 
 To run the simulations, you will need Python installed. Recommend using `conda` or `pip` for managing dependencies.
 
-Python 3.8 or higher, scipy version 1.15.3 and numpy version 2.1.3
+- Python 3.10-3.13
+- Dependencies:
+  - `numpy==2.1.3`
+  - `scipy==1.15.3`
+  - `pandas==2.3.3`
+  - `matplotlib==3.10.7`
+  - `joblib==1.5.2`
 
 ### Installation
 
@@ -25,10 +31,13 @@ Clone the repository:
 ```bash
 git clone https://github.com/karllandheer/GoldStandardVsProxy
 cd GoldStandardVsProxy
+conda create -n gsvp python=3.12 -y
+conda activate gsvp
+pip install -r requirements.txt
 ```
 
 ### Running
 
-You can then run each of the individual scripts, which replicate the analyses in Figures 2-5, and print out the numbers in the manuscript. Figure 1 was generated via synMARSS, which is licensed by Columbia Tech Ventures. Read about synMARSS here, and how to access it: https://pubmed.ncbi.nlm.nih.gov/39948757/. For example,. to re-create Figure 2, simply 
+You can then run each of the individual scripts, which replicate the analyses in Figures 2-5, and print out the numbers in the manuscript. Figure 1 was generated via synMARSS, which is licensed by Columbia Tech Ventures. Read about synMARSS here, and how to access it: https://pubmed.ncbi.nlm.nih.gov/39948757/. For example, to re-create Figure 2, simply 
 run ```python FPR_and_FNR.py```. Note that these scripts can take a while to run (many hours), so if you just want to test, set N_SIMULATIONS to a small number (e.g., 5000). The numbers will change slightly, but it will instead run much quicker to test.
 

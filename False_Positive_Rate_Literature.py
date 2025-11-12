@@ -10,8 +10,7 @@ import matplotlib.pyplot as plt
 np.random.seed(42)
 
 # --- 1. Simulation Constants ---
-# N_SIMULATIONS = 500_000 # Using 500k for final accuracy
-N_SIMULATIONS = 500       # Low number for a quick test
+N_SIMULATIONS = 500_000 # Using 500k for final accuracy
 ALPHA = 0.05
 
 # --- 2. Literature Values ---
@@ -36,15 +35,15 @@ print(f"Reference delta (for R_sigma=1.0) calculated as: {FIXED_DELTA_TEST:.3f}"
 # This is the theoretical maximum VR allowed for rho=0.72
 VR_MAX = (1 / FIXED_RHO)**2 
 VR_VALUES = [0.5, 1.0, VR_MAX] # Using VR_MAX instead of 2.0
-R_SIGMA_VALUES = [0.5, 1.0, 2.0]
+R_SIGMA_VALUES = [0.5, 1.0, 2]
 DELTA_SWEEP = np.linspace(0, 3, 71)
 
 print(f"Running with VR_VALUES: [0.5, 1.0, {VR_MAX:.3f} (VR_max)]")
 
 # --- 4. Output Paths ---
 OUTPUT_PATH = r'C:\ColumbiaWork\PapersOnGo\MEGAvsNon\MEGAvsNon\Figures'
-OUTPUT_DATA_PATH = "simulation_results_literature_FPR_VR_Rsigma_sweep_FIXED.csv"
-OUTPUT_FIGURE_PATH_FPR = "simulation_FPR_literature_VR_Rsigma_sweep_FIXED.png"
+OUTPUT_DATA_PATH = "simulation_results_literature_FPR_VR_Rsigma_sweep.csv"
+OUTPUT_FIGURE_PATH_FPR = "simulation_FPR_literature_VR_Rsigma_sweep.png"
 
 # Check if path exists, otherwise save to local directory
 if OUTPUT_PATH is not None and os.path.exists(OUTPUT_PATH):
@@ -52,8 +51,8 @@ if OUTPUT_PATH is not None and os.path.exists(OUTPUT_PATH):
     OUTPUT_FIGURE_PATH_FPR = os.path.join(OUTPUT_PATH, OUTPUT_FIGURE_PATH_FPR)
 else:
     print(f"Warning: OUTPUT_PATH '{OUTPUT_PATH}' not found. Saving to current directory.")
-    OUTPUT_DATA_PATH = "simulation_results_literature_FPR_VR_Rsigma_sweep_FIXED.csv"
-    OUTPUT_FIGURE_PATH_FPR = "simulation_FPR_literature_VR_Rsigma_sweep_FIXED.png"
+    OUTPUT_DATA_PATH = "simulation_results_literature_FPR_VR_Rsigma_sweep.csv"
+    OUTPUT_FIGURE_PATH_FPR = "simulation_FPR_literature_VR_Rsigma_sweep.png"
 
 
 def run_literature_fpr_sim(vr, r_sigma, delta): 
@@ -88,7 +87,6 @@ def run_literature_fpr_sim(vr, r_sigma, delta):
 
     # --- B. Run False Positive Rate (FPR) Simulation ---
     
-    # --- MAJOR FIX: Generate INDEPENDENT biological signals ---
     # S_A for controls
     S_A_fpr = np.random.normal(loc=0.0, scale=sigma_bio, 
                                  size=(N_SAMPLES, N_SIMULATIONS))
@@ -97,7 +95,6 @@ def run_literature_fpr_sim(vr, r_sigma, delta):
     # This is an INDEPENDENT draw from S_A_fpr.
     S_B_fpr = np.random.normal(loc=0.0, scale=sigma_bio, 
                                  size=(N_SAMPLES, N_SIMULATIONS)) 
-    # --- End of Fix ---
 
     # loc=0.0 because common bias is irrelevant to t-stat
     zeta_A = np.random.normal(loc=0.0, scale=sigma_contam, 
@@ -171,7 +168,6 @@ if __name__ == "__main__":
             # Plot the FPR curve for this R_sigma on the current ax
             ax.plot(data_subset['delta'], data_subset['FPR'])
             
-            # --- Perform Analysis for the FIXED DELTA ---
             fpr_list = data_subset['FPR'].values
             delta_list_sim = data_subset['delta'].values
             
@@ -188,7 +184,6 @@ if __name__ == "__main__":
 
         # --- Format this specific subplot (ax) ---
         
-        # MODIFIED: Custom title for the VR_MAX plot
         if vr == VR_MAX:
             ax.set_title(f'VR = {vr:.3f} ($VR_{{max}}$)')
         else:
@@ -200,7 +195,6 @@ if __name__ == "__main__":
         ax.set_xlabel('Differntial bias, δ (unitless)')
         ax.grid(True, linestyle=':', alpha=0.7)
 
-        # Add marker for the fixed delta we are testing
         ax.axvline(x=FIXED_DELTA_TEST, color='k', linestyle='--', linewidth=1.5, 
                    label=f"δ={FIXED_DELTA_TEST:.3f} (Rσ=1.0 Baseline)")
         
