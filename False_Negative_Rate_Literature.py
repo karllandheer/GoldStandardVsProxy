@@ -124,7 +124,7 @@ if __name__ == "__main__":
     # --- D. Create and Save Plot ---
     print("Generating plot...")
     
-    fig, axes = plt.subplots(1, 3, figsize=(18, 5), sharey=True)
+    fig, axes = plt.subplots(1, 3, figsize=(18, 5), sharey=False)
     
     for ax, vr in zip(axes, VR_VALUES):
         legend_labels = []
@@ -159,13 +159,13 @@ if __name__ == "__main__":
             legend_labels.append(f'ρ = {corr:.2f}')
 
         if vr == VR_MAX:
-            ax.set_title(f'VR = {vr:.3f} ($VR_{{max}}$)')
+            ax.set_title(f'VR = {vr:.1f} ($VR_{{max}}$)')
         else:
             ax.set_title(f'VR = {vr}')
             
         ax.legend(legend_labels, fancybox=True)
         ax.tick_params(which='both', top=True, right=True, labeltop=False, labelright=False)
-        ax.set_xlabel('Difference between means of gold-standard measurements, Δ (unitless)')
+        ax.set_xlabel('True effect size, Δ (unitless)')
         ax.grid(True, linestyle=':', alpha=0.7)
         ax.set_ylim([0, 1.02])
         

@@ -147,7 +147,7 @@ if __name__ == "__main__":
     print("Generating plot...")
     
     # Create a 1x3 grid of subplots, sharing the Y-axis
-    fig, axes = plt.subplots(1, 3, figsize=(20, 6), sharey=True)
+    fig, axes = plt.subplots(1, 3, figsize=(20, 6), sharey=False)
     
     # --- Print Final Analysis Header ---
     print(f"\n--- Analysis of FPR for FIXED BIAS (δ={FIXED_DELTA_TEST:.3f}) ---")
@@ -175,6 +175,7 @@ if __name__ == "__main__":
             closest_index = np.argmin(np.abs(delta_list_sim - FIXED_DELTA_TEST))
             FPR_at_fixed_delta = fpr_list[closest_index]
             
+            
             analysis_results.append({
                 'R_sigma': r_sigma,
                 'FPR': FPR_at_fixed_delta
@@ -182,14 +183,13 @@ if __name__ == "__main__":
             
             legend_labels.append(f'$R_\\sigma = {r_sigma}$')
 
-        # --- Format this specific subplot (ax) ---
         
         if vr == VR_MAX:
-            ax.set_title(f'VR = {vr:.3f} ($VR_{{max}}$)')
+            ax.set_title(f'VR = {vr:.1f} ($VR_{{max}}$)')
         else:
             ax.set_title(f'VR = {vr}')
             
-        ax.legend(legend_labels, fancybox=True, title="Noise Ratio ($R_\\sigma$)")
+        ax.legend(legend_labels, fancybox=True)
         ax.tick_params(which='both', top=True, right=True, labeltop=False, labelright=False)
         ax.set_ylim([0, 1.02])
         ax.set_xlabel('Differntial bias, δ (unitless)')

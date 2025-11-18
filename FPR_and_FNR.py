@@ -6,6 +6,8 @@ import itertools
 import time
 import os
 import matplotlib.pyplot as plt
+import gc
+
 
 np.random.seed(42)
 
@@ -99,6 +101,8 @@ def run_main_simulation(n_samples, r_sigma, rho):
         results_list.append((n_samples, r_sigma, rho, "FPR", delta, fpr))
 
     
+    del S_A_fpr, zeta_A, P_A_fpr, zeta_B_fpr, P_B_fpr, p_values_fpr
+    gc.collect() # Force garbage collection
     # --- C. Run False Negative Rate (FNR) Simulations (looping over Delta) ---
     
     S_A_fnr = np.random.normal(loc=MU_BIO, scale=SIGMA_BIO, 
@@ -178,12 +182,14 @@ if __name__ == "__main__":
     print(f"VR fixed at {FIXED_VR}, ALPHA fixed at {ALPHA}")
 
     # --- B. Run Simulations in Parallel ---
-    results = Parallel(n_jobs=-2, verbose=10)(
+    #4 jobs works for me, you can increase but may get OOM
+    results = Parallel(n_jobs=2, verbose=10)(
         delayed(run_main_simulation)(n_samples, r_sigma, rho) for n_samples, r_sigma, rho in tasks
     )
 
     # --- C. Process and Save Results ---
     flat_results = [item for sublist in results for item in sublist]
+    
     
     df = pd.DataFrame(flat_results, 
                       columns=['N_samples', 'R_sigma', 'rho', 'Rate_Type', 'Effect_Size', 'Rate'])
@@ -191,6 +197,44 @@ if __name__ == "__main__":
     df = df.dropna()
     df = df.sort_values(by=['N_samples', 'R_sigma', 'Rate_Type', 'Effect_Size', 'rho'])
     df.to_csv(OUTPUT_DATA_PATH, index=False)
+    
+
+    # Define the query parameters
+    query_n = 25
+    query_effect = 1.0  # This is 'Delta' for FNR
+    query_type = 'FNR'
+    
+    # Create a subset of the DataFrame
+    subset_df = df[
+        (df['N_samples'] == query_n) &
+        (df['Effect_Size'] == query_effect) &
+        (df['Rate_Type'] == query_type)
+    ]
+    
+    if subset_df.empty:
+        print(f"ERROR: No data found for N={query_n}, Effect_Size={query_effect}, Rate_Type={query_type}")
+    else:
+        # 1. Find the rate for rho = 1.0
+        rho_1_data = subset_df[subset_df['rho'] == 1.0]
+        if not rho_1_data.empty:
+            fnr_1 = rho_1_data['Rate'].values[0]
+            print(f"For N_samples={query_n}, Delta={query_effect:.1f}, rho=1.0: FNR = {fnr_1:.4f}")
+        else:
+            print(f"No data found for rho=1.0")
+            
+        # 2. Find the rate for rho closest to 0.7
+        # Find the rho value in the dataframe that is closest to 0.7
+        closest_rho = subset_df.iloc[(subset_df['rho'] - 0.7).abs().argmin()]['rho']
+        rho_07_data = subset_df[subset_df['rho'] == closest_rho]
+        
+        if not rho_07_data.empty:
+            fnr_07 = rho_07_data['Rate'].values[0]
+            print(f"For N_samples={query_n}, Delta={query_effect:.1f}, rho={closest_rho:.4f} (closest to 0.7): FNR = {fnr_07:.4f}")
+        else:
+            print(f"No data found for rho close to 0.7")
+            
+    print("----------------------------------\n")
+
 
     end_time = time.time()
     print("\n--- All Simulations Complete ---")
@@ -316,7 +360,8 @@ if __name__ == "__main__":
     ax_alpha.set_xlabel('Nominal false-positive rate, (α) (unitless)', fontsize=12)
     ax_alpha.set_ylabel('Rate (unitless)', fontsize=12)
     ax_alpha.grid(True, which='both', linestyle=':', alpha=0.7)
-    ax_alpha.legend()
+    # ax_alpha.legend()
+    ax_alpha.legend(loc='lower center')
     ax_alpha.set_ylim(-0.05, 1.05)
     
 
